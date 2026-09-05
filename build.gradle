@@ -94,7 +94,7 @@ dependencies {
     testImplementation 'net.jqwik:jqwik:1.8.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-processResources {
+tasks.named('processResources') {
     inputs.property "version", project.version
     inputs.property "minecraft", stonecutter.current.version
     filteringCharset "UTF-8"
