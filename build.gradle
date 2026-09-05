@@ -25,8 +25,8 @@ dependencies {
     // Version-specific dependencies using Stonecutter conditions
     minecraft "com.mojang:minecraft:${sc.current.version}"
     
-   if (sc.current.parsed >= "26.1.2") {
-        mappings "net.fabricmc:yarn:26.1.2+build.1:v2"
+  if (sc.current.parsed >= "26.1.2") {
+        mappings loom.officialMojangMappings()
         modImplementation "net.fabricmc.fabric-api:fabric-api:0.155.2+26.1.2"
     } else if (sc.current.parsed >= "1.21.11") {
         mappings "net.fabricmc:yarn:1.21.11+build.1:v2"
