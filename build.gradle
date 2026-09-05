@@ -145,17 +145,19 @@ def mixinJavaLevel = sc.current.parsed >= "26.1.2" ? "JAVA_25" : (sc.current.par
             "message_handler_mixin": messageHandlerMixin
         )
     }
+if (sc.current.parsed < "1.19") {
+    sourceSets {
+        main {
+            java {
+                exclude '**/MessageHandlerMixin.java'
+            }
+        }
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    
-    // Exclude MessageHandlerMixin for versions < 1.19
-    if (sc.current.parsed < "1.19") {
-        exclude '**/MessageHandlerMixin.java'
-    }
 }
-
 // Configure test task
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
