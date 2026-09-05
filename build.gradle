@@ -5,7 +5,7 @@ plugins {
 }
 loom {
     if (sc.current.parsed >= "26.1.2") {
-        intermediaryUrl = { "https://maven.fabricmc.net/net/fabricmc/intermediary/1.21.11/intermediary-1.21.11-v2.jar" }
+        intermediaryUrl = "https://maven.fabricmc.net/net/fabricmc/intermediary/1.21.11/intermediary-1.21.11-v2.jar"
     }
 }
 
