@@ -1,3 +1,4 @@
+//? if >=1.19 {
 package com.linguachat.mixin.client;
 
 import org.spongepowered.asm.mixin.Final;
@@ -234,13 +235,13 @@ public class MessageHandlerMixin {
                     
                     if (original != null) {
                         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.message_already_translated", 
-                                                    extractedPlayerName, extractedMessageText));
+                                                                    extractedPlayerName, extractedMessageText));
                         return false;
                     }
                     
                     if (MessageStore.wasMessageRecentlyProcessed(extractedPlayerName, extractedMessageText)) {
                         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.message_recently_processed", 
-                                                    extractedPlayerName, extractedMessageText));
+                                                                    extractedPlayerName, extractedMessageText));
                         return false;
                     }
                     
@@ -252,7 +253,7 @@ public class MessageHandlerMixin {
                     
                     if (isOwnMessage) {
                         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.checking_own_message", 
-                                                   extractedPlayerName));
+                                                                   extractedPlayerName));
                         
                         MessageStore.markMessageAsProcessed(extractedPlayerName, extractedMessageText);
                     }
@@ -424,7 +425,7 @@ public class MessageHandlerMixin {
     // Intercept addMessage(Text) for ChatHud
     @Redirect(method = "*", 
               at = @At(value = "INVOKE", 
-                     target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"))
+                       target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"))
     private void redirectAddMessage(ChatHud instance, Text message) {
         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.debug.intercept_add_message"));
         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.debug.original_text", message.getString()));
@@ -489,7 +490,7 @@ public class MessageHandlerMixin {
     // Intercept addMessage(Text, MessageSignatureData, MessageIndicator) for ChatHud
     @Redirect(method = "*", 
               at = @At(value = "INVOKE", 
-                     target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V"))
+                       target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V"))
     private void redirectAddMessageWithMeta(ChatHud instance, Text message, MessageSignatureData messageSignatureData, MessageIndicator indicator) {
         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.debug.intercept_add_message_meta"));
         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.debug.original_text", message.getString()));
@@ -554,7 +555,7 @@ public class MessageHandlerMixin {
     // Intercept setOverlayMessage in InGameHud
     @Redirect(method = "*", 
               at = @At(value = "INVOKE", 
-                     target = "Lnet/minecraft/client/gui/hud/InGameHud;setOverlayMessage(Lnet/minecraft/text/Text;Z)V"))
+                       target = "Lnet/minecraft/client/gui/hud/InGameHud;setOverlayMessage(Lnet/minecraft/text/Text;Z)V"))
     private void redirectSetOverlayMessage(InGameHud instance, Text message, boolean tinted) {
         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.debug.intercept_overlay"));
         LinguaChatMod.LOGGER.info(I18nCompat.translate("linguachat.log.debug.original_text", message.getString()));
@@ -617,7 +618,7 @@ public class MessageHandlerMixin {
     // Method for async translation and adding message to chat with metadata
     @Unique
     private void translateMessageAndAddWithMeta(ChatHud chatHud, Text originalMessage,
-                                        MessageSignatureData signature, MessageIndicator indicator) {
+                                                MessageSignatureData signature, MessageIndicator indicator) {
         // Extract player name from sender profile or message text
         //? if >=1.19.3 {
         String senderName = extractSenderName(CURRENT_SENDER.get(), originalMessage.getString());
@@ -958,4 +959,5 @@ public class MessageHandlerMixin {
         
         return extractPlayerNameFromMessage(messageText);
     }
-} 
+}
+//?}
