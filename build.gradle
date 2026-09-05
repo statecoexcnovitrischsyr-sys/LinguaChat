@@ -29,8 +29,8 @@ repositories {
 dependencies {
     // Version-specific dependencies using Stonecutter conditions
     minecraft "com.mojang:minecraft:${sc.current.version}"
-    
-  if (sc.current.parsed >= "26.1.2") {
+
+    if (sc.current.parsed >= "26.1.2") {
         mappings "net.fabricmc:yarn:1.21.11+build.1:v2"
         modImplementation "net.fabricmc.fabric-api:fabric-api:0.155.2+26.1.2"
     } else if (sc.current.parsed >= "1.21.11") {
@@ -57,11 +57,11 @@ dependencies {
         mappings "net.fabricmc:yarn:1.16.5+build.10:v2"
         modImplementation "net.fabricmc.fabric-api:fabric-api:0.42.0+1.16"
     }
-    
+
     modImplementation "net.fabricmc:fabric-loader:0.16.10"
-    
-    // Mod Menu for GUI settings - versions depend on Minecraft version
-   if (sc.current.parsed >= "26.1.2") {
+
+    // Mod Menu for GUI settings
+    if (sc.current.parsed >= "26.1.2") {
         modImplementation "com.terraformersmc:modmenu:17.0.0-beta.2"
     } else if (sc.current.parsed >= "1.21.11") {
         modImplementation "com.terraformersmc:modmenu:17.0.0-beta.2"
@@ -80,8 +80,8 @@ dependencies {
     } else {
         modImplementation "com.terraformersmc:modmenu:1.16.23"
     }
-    
-   // DeepL API Client
+
+    // DeepL API Client
     include 'com.deepl.api:deepl-java:1.9.0'
     implementation 'com.deepl.api:deepl-java:1.9.0'
 
@@ -94,7 +94,6 @@ dependencies {
     testImplementation 'net.jqwik:jqwik:1.8.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
 processResources {
     inputs.property "version", project.version
     inputs.property "minecraft", stonecutter.current.version
