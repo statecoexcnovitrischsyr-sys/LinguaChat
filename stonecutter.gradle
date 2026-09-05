@@ -1,7 +1,7 @@
 plugins {
     id "dev.kikugie.stonecutter"
 }
-stonecutter.active "1.21.11"
+stonecutter.active "26.1.2"
 
 // Custom task to switch active version
 rootProject.tasks.register("switchVersion") {
@@ -15,7 +15,7 @@ rootProject.tasks.register("switchVersion") {
             return
         }
         
-        def validVersions = ["1.16.5", "1.18.2", "1.19.2", "1.20.1", "1.21.1", "1.21.4", "1.21.5", "1.21.11"]
+        def validVersions = ["1.16.5", "1.18.2", "1.19.2", "1.20.1", "1.21.1", "1.21.4", "1.21.5", "1.21.11", "26.1.2"]
         if (!validVersions.contains(targetVersion)) {
             println "❌ Error: Version ${targetVersion} is not supported"
             println "Available versions: ${validVersions.join(', ')}"
