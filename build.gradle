@@ -99,13 +99,11 @@ tasks.named('processResources') {
     inputs.property "minecraft", stonecutter.current.version
     filteringCharset "UTF-8"
 
-    // Determine required Java version based on Minecraft version
-    def javaVersion = sc.current.parsed >= "26.1.2" ? "25" : (sc.current.parsed >= "1.21" ? "21" : (sc.current.parsed >= "1.18" ? "17" : "8"))
-def mixinJavaLevel = sc.current.parsed >= "26.1.2" ? "JAVA_25" : (sc.current.parsed >= "1.21" ? "JAVA_21" : (sc.current.parsed >= "1.18" ? "JAVA_17" : "JAVA_8"))
-    
-    // Determine Fabric API version based on Minecraft version
-    def fabricApiVersion
-    def fabricApiModId
+    def javaVersion = (sc.current.parsed >= "26.1.2") ? "25" : ((sc.current.parsed >= "1.21") ? "21" : ((sc.current.parsed >= "1.18") ? "17" : "8"))
+    def mixinJavaLevel = (sc.current.parsed >= "26.1.2") ? "JAVA_25" : ((sc.current.parsed >= "1.21") ? "JAVA_21" : ((sc.current.parsed >= "1.18") ? "JAVA_17" : "JAVA_8"))
+
+    def fabricApiVersion = "0.42.0+1.16"
+    def fabricApiModId = "fabric"
     if (sc.current.parsed >= "1.21.4") {
         fabricApiVersion = "0.99.5+1.21"
         fabricApiModId = "fabric-api"
@@ -121,13 +119,9 @@ def mixinJavaLevel = sc.current.parsed >= "26.1.2" ? "JAVA_25" : (sc.current.par
     } else if (sc.current.parsed >= "1.18.2") {
         fabricApiVersion = "0.76.0+1.18.2"
         fabricApiModId = "fabric"
-    } else {
-        fabricApiVersion = "0.42.0+1.16"
-        fabricApiModId = "fabric"
     }
-    
- // Determine if MessageHandlerMixin is needed (only for 1.19+)
-    def messageHandlerMixin = (sc.current.parsed >= "1.19") ? ",\n        \"client.MessageHandlerMixin\"" : ""
+
+    def messageHandlerMixin = (sc.current.parsed >= "1.19") ? ',\n        "client.MessageHandlerMixin"' : ""
 
     filesMatching("fabric.mod.json") {
         expand(
@@ -139,19 +133,17 @@ def mixinJavaLevel = sc.current.parsed >= "26.1.2" ? "JAVA_25" : (sc.current.par
             "fabric_api_mod_id": fabricApiModId
         )
     }
-    
+
     filesMatching("linguachat.mixins.json") {
         expand(
             "mixin_java_level": mixinJavaLevel,
             "message_handler_mixin": messageHandlerMixin
         )
     }
-if (sc.current.parsed < "1.19") {
-    sourceSets {
-        main {
-            java {
-                exclude '**/MessageHandlerMixin.java'
-            }
+
+    if (sc.current.parsed < "1.19") {
+        sourceSets.main.java {
+            exclude "**/MessageHandlerMixin.java"
         }
     }
 }
@@ -159,7 +151,7 @@ if (sc.current.parsed < "1.19") {
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
 }
-// Configure test task
+
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
     testLogging {
@@ -169,21 +161,18 @@ tasks.withType(Test).configureEach {
     }
 }
 
-// Configure Java toolchain
 java {
-    // Use Java 8 for 1.16.5, Java 17 for 1.18-1.20, Java 21 for 1.21+
-    def javaVersion = sc.current.parsed >= "26.1.2" ? 25 : (sc.current.parsed >= "1.21" ? 21 : (sc.current.parsed >= "1.18" ? 17 : 8))
-    
+    def javaVer = (sc.current.parsed >= "26.1.2") ? 25 : ((sc.current.parsed >= "1.21") ? 21 : ((sc.current.parsed >= "1.18") ? 17 : 8))
     toolchain {
-        languageVersion = JavaLanguageVersion.of(javaVersion)
+        languageVersion = JavaLanguageVersion.of(javaVer)
     }
-    sourceCompatibility = JavaVersion.toVersion(javaVersion)
-    targetCompatibility = JavaVersion.toVersion(javaVersion)
+    sourceCompatibility = JavaVersion.toVersion(javaVer)
+    targetCompatibility = JavaVersion.toVersion(javaVer)
     withSourcesJar()
 }
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${base.archivesName.get()}"}
+        rename { "${it}_${base.archivesName.get()}" }
     }
-} 
+}
